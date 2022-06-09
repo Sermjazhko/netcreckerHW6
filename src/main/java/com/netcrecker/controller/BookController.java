@@ -79,4 +79,14 @@ public class BookController {
         }
     }
 
+    @GetMapping("/various")
+    public List<String> getVarious() {
+        return bookService.getVariousBooks();
+    }
+
+    @GetMapping("/name")
+    public List<String> getName() {
+        return bookService.getName();
+    }
+
 }

@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,9 +41,9 @@ public class PurchasesController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deletePurchase(@PathVariable(value = "id") Integer id){
         try {
-            Optional<Purchases> shop = purchasesService.findById(id);
-            if (shop.isPresent()) {
-                purchasesService.delete(shop.get());
+            Optional<Purchases> purchases = purchasesService.findById(id);
+            if (purchases.isPresent()) {
+                purchasesService.delete(purchases.get());
             }
             return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
@@ -52,15 +52,16 @@ public class PurchasesController {
     }
 
     @PostMapping("/purchases/{idShop}/{idBuyer}/{idBook}")
-    public ResponseEntity<Purchases> savePurchase( @PathVariable Integer idShop, @PathVariable Integer idBuyer, @PathVariable Integer idBook, @RequestBody Integer quantity){
+    public ResponseEntity<Purchases> savePurchase(@PathVariable Integer idShop, @PathVariable Integer idBuyer, @PathVariable Integer idBook,  @RequestBody Purchases purchases){
         try {
-            Date data = new Date();
+            Integer quantity = purchases.getQuantity();
+            Date date = purchases.getDate();
             Book book = bookService.findById(idBook).get();
             Buyer buyer = buyerService.findById(idBuyer).get();
             Shop shop = shopService.findById(idShop).get();
             Integer sum = (int) ((quantity*book.getPrice()*(1+0.01*shop.getCommission()))*(1-0.01*buyer.getDiscount()));
-            Purchases purchases = new Purchases(data, idShop, idBuyer, idBook, quantity, sum);
-            return new ResponseEntity<>(purchasesService.save(purchases), HttpStatus.CREATED);
+            Purchases purchases1 = new Purchases(date, idShop, idBuyer, idBook, quantity, sum);
+            return new ResponseEntity<>(purchasesService.save(purchases1), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -98,4 +99,8 @@ public class PurchasesController {
         }
     }
 
+    @GetMapping("/various")
+    public List<String> getVarious() {
+        return purchasesService.getVariousMonth();
+    }
 }

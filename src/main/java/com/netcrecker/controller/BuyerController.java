@@ -79,4 +79,14 @@ public class BuyerController {
         }
     }
 
+    @GetMapping("/various")
+    public List<String> getVarious() {
+        return buyerService.getVariousArea();
+    }
+
+    @GetMapping("/nndistrict")
+    public List<String> getSurname() {
+        return buyerService.getSurname();
+    }
+
 }

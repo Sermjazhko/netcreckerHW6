@@ -79,4 +79,10 @@ public class ShopController {
         }
     }
 
+
+    @GetMapping("/name")
+    public List<String> getVarious() {
+        return shopService.getName();
+    }
+
 }
