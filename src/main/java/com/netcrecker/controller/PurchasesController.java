@@ -54,6 +54,7 @@ public class PurchasesController {
     @PostMapping("/purchases/{idShop}/{idBuyer}/{idBook}")
     public ResponseEntity<Purchases> savePurchase(@PathVariable Integer idShop, @PathVariable Integer idBuyer, @PathVariable Integer idBook,  @RequestBody Purchases purchases){
         try {
+            // заполняем только дату и количество
             Integer quantity = purchases.getQuantity();
             Date date = purchases.getDate();
             Book book = bookService.findById(idBook).get();
@@ -102,5 +103,35 @@ public class PurchasesController {
     @GetMapping("/various")
     public List<String> getVarious() {
         return purchasesService.getVariousMonth();
+    }
+
+    @GetMapping("/surname")
+    public List<String> getSurnameName() {
+        return purchasesService.getSurnameName();
+    }
+
+    @GetMapping("/information")
+    public List<String> getInfoBookAndName() {
+        return purchasesService.getInfoBookAndBuyer();
+    }
+
+    @GetMapping("/infoSum")
+    public List<String> getInfoSum() {
+        return purchasesService.getInfoNumberSum();
+    }
+
+    @GetMapping("/infoArea")
+    public List<String> getInfoArea() {
+        return purchasesService.getInfoSurnameAndArea();
+    }
+
+    @GetMapping("/infoShops")
+    public List<String> getInfoShops() {
+        return purchasesService.getInfoShops();
+    }
+
+    @GetMapping("/infoPurchBook")
+    public List<String> getInfoPurchBook() {
+        return purchasesService.getInfoBookAndShop();
     }
 }

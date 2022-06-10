@@ -69,7 +69,7 @@ public class BookController {
     }
 
     @PatchMapping("/update/{id}/{warehouse}")
-    public ResponseEntity<Book> updateId(@PathVariable(value = "id") Integer id, @PathVariable Integer warehouse){
+    public ResponseEntity<Book> updateId(@PathVariable(value = "id") Integer id, @PathVariable String  warehouse){
         try {
             Book book = bookService.findById(id).get();
             book.setWarehouse(warehouse);

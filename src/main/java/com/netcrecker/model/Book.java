@@ -14,12 +14,12 @@ public class Book {
 
     private String name;
     private Integer price;
-    private Integer warehouse;
+    private String warehouse;
     private Integer quantity;
 
     public Book(){}
 
-    public Book(String name, Integer price, Integer warehouse, Integer quantity) {
+    public Book(String name, Integer price, String warehouse, Integer quantity) {
         this.name = name;
         this.price = price;
         this.warehouse = warehouse;
@@ -46,11 +46,11 @@ public class Book {
         this.price = price;
     }
 
-    public Integer getWarehouse() {
+    public String getWarehouse() {
         return warehouse;
     }
 
-    public void setWarehouse(Integer warehouse) {
+    public void setWarehouse(String warehouse) {
         this.warehouse = warehouse;
     }
 
