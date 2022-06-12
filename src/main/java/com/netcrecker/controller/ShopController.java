@@ -1,7 +1,7 @@
 package com.netcrecker.controller;
 
 import com.netcrecker.model.Shop;
-import com.netcrecker.services.ShopService;
+import com.netcrecker.services.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,24 +13,24 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/shop")
 public class ShopController {
-    private final ShopService shopService;
+    private final ShopRepository shopRepository;
 
     @Autowired
-    public ShopController(ShopService shopService) {
-        this.shopService = shopService;
+    public ShopController(ShopRepository shopRepository) {
+        this.shopRepository = shopRepository;
     }
 
     @GetMapping("/shops")
     public List<Shop> getAllShops() {
-        return shopService.findAll();
+        return shopRepository.findAll();
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteShop(@PathVariable(value = "id") Integer id){
         try {
-            Optional<Shop> shop = shopService.findById(id);
+            Optional<Shop> shop = shopRepository.findById(id);
             if (shop.isPresent()) {
-                shopService.delete(shop.get());
+                shopRepository.delete(shop.get());
             }
             return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class ShopController {
     @PostMapping("/shops")
     public ResponseEntity<Shop> saveShop(@RequestBody Shop shop){
         try {
-            return new ResponseEntity<>(shopService.save(shop), HttpStatus.CREATED);
+            return new ResponseEntity<>(shopRepository.save(shop), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -50,7 +50,7 @@ public class ShopController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Shop> updateId( @RequestBody Shop shop){
         try {
-            return new ResponseEntity<Shop>(shopService.save(shop), HttpStatus.OK);
+            return new ResponseEntity<Shop>(shopRepository.save(shop), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -60,7 +60,7 @@ public class ShopController {
     @GetMapping("/shop/{id}")
     public ResponseEntity<Shop> getShop(@PathVariable(value = "id") Integer id) {
         try {
-            Shop buyer = shopService.findById(id).get();
+            Shop buyer = shopRepository.findById(id).get();
             return new ResponseEntity<Shop>(buyer, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,9 +71,9 @@ public class ShopController {
     @PatchMapping("/update/{id}/{commission}")
     public ResponseEntity<Shop> updateId(@PathVariable(value = "id") Integer id, @PathVariable Integer commission){
         try {
-            Shop shop = shopService.findById(id).get();
+            Shop shop = shopRepository.findById(id).get();
             shop.setCommission(commission);
-            return new ResponseEntity<Shop>(shopService.save(shop), HttpStatus.OK);
+            return new ResponseEntity<Shop>(shopRepository.save(shop), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -82,7 +82,7 @@ public class ShopController {
 
     @GetMapping("/name")
     public List<String> getVarious() {
-        return shopService.getName();
+        return shopRepository.getName();
     }
 
 }

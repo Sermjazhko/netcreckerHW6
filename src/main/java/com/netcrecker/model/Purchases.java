@@ -27,6 +27,7 @@ public class Purchases {
         this.sum = sum;
     }
 
+
     public Integer getNumber() {
         return number;
     }

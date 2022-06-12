@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PurchasesService extends JpaRepository<Purchases,Integer> {
+public interface PurchasesRepository extends JpaRepository<Purchases,Integer> {
     @Query(value = "select distinct to_char(purchase.date, 'MM') from purchase", nativeQuery = true)
     List<String> getVariousMonth();
 
@@ -25,7 +25,7 @@ public interface PurchasesService extends JpaRepository<Purchases,Integer> {
     @Query(value = "select t1.surname, t1.area ,t3.date from purchase as t3 inner join buyer as t1 on t3.buyer = t1.id inner join shop as t2 on t3.seller = t2.id where t2.area = t1.area and to_char(t3.date, 'MM') > to_char(make_date(2000,02,01), 'MM') order by t3.date", nativeQuery = true)
     List<String> getInfoSurnameAndArea();
 
-    @Query(value = "select t2.name, t2.area from purchase as t3 inner join buyer as t1 on t3.buyer = t1.id inner join shop as t2 on t3.seller = t2.id where t2.area != 'Автозаводской район' and t1.discount>=10 and t1.discount <= 15", nativeQuery = true)
+    @Query(value = "select t2.name from purchase as t3 inner join buyer as t1 on t3.buyer = t1.id inner join shop as t2 on t3.seller = t2.id where t2.area != 'Автозаводской район' and t1.discount>=10 and t1.discount <= 15", nativeQuery = true)
     List<String> getInfoShops();
 
     @Query(value = "select t1.name, t1.warehouse, t3.quantity, t3.sum from purchase as t3 inner join book as t1 on t3.book = t1.id inner join shop as t2 on t3.seller = t2.id where t2.area = t1.warehouse and t1.quantity>=10 order by t3.sum", nativeQuery = true)

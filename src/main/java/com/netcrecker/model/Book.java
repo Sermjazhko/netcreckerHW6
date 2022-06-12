@@ -1,12 +1,9 @@
 package com.netcrecker.model;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "book")
-@Data
 public class Book {
     @Id // первичный ключ
     @GeneratedValue(strategy = GenerationType.IDENTITY) // указывает, что свойство будет создаваться согласно указанной стратегии
@@ -20,6 +17,13 @@ public class Book {
     public Book(){}
 
     public Book(String name, Integer price, String warehouse, Integer quantity) {
+        this.name = name;
+        this.price = price;
+        this.warehouse = warehouse;
+        this.quantity = quantity;
+    }
+    public Book(Integer id, String name, Integer price, String warehouse, Integer quantity) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.warehouse = warehouse;

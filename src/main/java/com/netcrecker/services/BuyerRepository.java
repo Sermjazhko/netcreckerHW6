@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BuyerService extends JpaRepository<Buyer,Integer> {
+public interface BuyerRepository extends JpaRepository<Buyer,Integer> {
     @Query(value = "select distinct area from buyer", nativeQuery = true)
     List<String> getVariousArea();
 

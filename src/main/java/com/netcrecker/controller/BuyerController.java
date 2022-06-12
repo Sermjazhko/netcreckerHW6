@@ -1,7 +1,7 @@
 package com.netcrecker.controller;
 
 import com.netcrecker.model.Buyer;
-import com.netcrecker.services.BuyerService;
+import com.netcrecker.services.BuyerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,24 +13,24 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/buyer")
 public class BuyerController {
-    private final BuyerService buyerService;
+    private final BuyerRepository buyerRepository;
 
     @Autowired
-    public BuyerController(BuyerService buyerService) {
-        this.buyerService = buyerService;
+    public BuyerController(BuyerRepository buyerRepository) {
+        this.buyerRepository = buyerRepository;
     }
 
     @GetMapping("/buyers")
     public List<Buyer> getAllBuyers() {
-        return buyerService.findAll();
+        return buyerRepository.findAll();
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteBuyer(@PathVariable(value = "id") Integer id){
         try {
-            Optional<Buyer> buyer = buyerService.findById(id);
+            Optional<Buyer> buyer = buyerRepository.findById(id);
             if (buyer.isPresent()) {
-                buyerService.delete(buyer.get());
+                buyerRepository.delete(buyer.get());
             }
             return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class BuyerController {
     @PostMapping("/buyers")
     public ResponseEntity<Buyer> saveBuyer(@RequestBody Buyer buyer){
         try {
-            return new ResponseEntity<>(buyerService.save(buyer), HttpStatus.CREATED);
+            return new ResponseEntity<>(buyerRepository.save(buyer), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -50,7 +50,7 @@ public class BuyerController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Buyer> updateId( @RequestBody Buyer buyer){
         try {
-            return new ResponseEntity<Buyer>(buyerService.save(buyer), HttpStatus.OK);
+            return new ResponseEntity<Buyer>(buyerRepository.save(buyer), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -60,7 +60,7 @@ public class BuyerController {
     @GetMapping("/buyer/{id}")
     public ResponseEntity<Buyer> getBuyer(@PathVariable(value = "id") Integer id) {
         try {
-            Buyer buyer = buyerService.findById(id).get();
+            Buyer buyer = buyerRepository.findById(id).get();
             return new ResponseEntity<Buyer>(buyer, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,9 +71,9 @@ public class BuyerController {
     @PatchMapping("/update/{id}/{discount}")
     public ResponseEntity<Buyer> updateId(@PathVariable(value = "id") Integer id, @PathVariable Integer discount){
         try {
-            Buyer book = buyerService.findById(id).get();
+            Buyer book = buyerRepository.findById(id).get();
             book.setDiscount(discount);
-            return new ResponseEntity<Buyer>(buyerService.save(book), HttpStatus.OK);
+            return new ResponseEntity<Buyer>(buyerRepository.save(book), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -81,12 +81,12 @@ public class BuyerController {
 
     @GetMapping("/various")
     public List<String> getVarious() {
-        return buyerService.getVariousArea();
+        return buyerRepository.getVariousArea();
     }
 
     @GetMapping("/nndistrict")
     public List<String> getSurname() {
-        return buyerService.getSurname();
+        return buyerRepository.getSurname();
     }
 
 }
