@@ -1,9 +1,6 @@
 package com.netcrecker.controller;
 
-import com.netcrecker.model.Book;
-import com.netcrecker.model.Buyer;
-import com.netcrecker.model.Purchases;
-import com.netcrecker.model.Shop;
+import com.netcrecker.model.*;
 import com.netcrecker.services.BookRepository;
 import com.netcrecker.services.BuyerRepository;
 import com.netcrecker.services.PurchasesRepository;
@@ -116,22 +113,24 @@ public class PurchasesController {
     }
 
     @GetMapping("/infoSum")
-    public List<String> getInfoSum() {
-        return purchasesRepository.getInfoNumberSum();
+    public List<String> getInfoSum(@RequestBody Integer sum) {
+        return purchasesRepository.getInfoNumberSum(sum);
     }
 
     @GetMapping("/infoArea")
-    public List<String> getInfoArea() {
-        return purchasesRepository.getInfoSurnameAndArea();
+    public List<String> getInfoArea(@RequestBody Integer date) {
+        return purchasesRepository.getInfoSurnameAndArea(date);
     }
 
     @GetMapping("/infoShops")
-    public List<String> getInfoShops() {
-        return purchasesRepository.getInfoShops();
+    public List<String> getInfoShops(@RequestBody String discount) {
+       // StringAndInteger discount = new StringAndInteger("Автозаводской район",10,15);
+        String[] discounts = discount.split(", ");
+        return purchasesRepository.getInfoShops(discounts[0], Integer.parseInt(discounts[1]),Integer.parseInt(discounts[2]));
     }
 
     @GetMapping("/infoPurchBook")
-    public List<String> getInfoPurchBook() {
-        return purchasesRepository.getInfoBookAndShop();
+    public List<String> getInfoPurchBook(@RequestBody Integer quantity) {
+        return purchasesRepository.getInfoBookAndShop(quantity);
     }
 }

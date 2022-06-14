@@ -109,7 +109,9 @@ public class ShopControllerIntegrationTest {
         repository.save(shop3);
 
 
-        mvc.perform(get("http://localhost:9090/shop/name"))
+        mvc.perform(get("http://localhost:9090/shop/name")
+                        .contentType("application/json")
+                        .content("Сормовский район, Советский район"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0]").value(shop1.getName()))

@@ -1,6 +1,7 @@
 package com.netcrecker.controller;
 
 import com.netcrecker.model.Book;
+import com.netcrecker.model.StringAndInteger;
 import com.netcrecker.services.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,8 +89,9 @@ public class BookController {
     }
 
     @GetMapping("/name")
-    public List<String> getName() {
-        return bookRepository.getName();
+    public List<String> getName(@RequestBody StringAndInteger price) {
+        // передавать просто %windows%
+        return bookRepository.getName(price.getInteger(), price.getString());
     }
 
 }

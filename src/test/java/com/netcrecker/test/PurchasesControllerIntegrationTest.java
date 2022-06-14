@@ -1,10 +1,7 @@
 package com.netcrecker.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netcrecker.model.Book;
-import com.netcrecker.model.Buyer;
-import com.netcrecker.model.Purchases;
-import com.netcrecker.model.Shop;
+import com.netcrecker.model.*;
 import com.netcrecker.services.BookRepository;
 import com.netcrecker.services.BuyerRepository;
 import com.netcrecker.services.PurchasesRepository;
@@ -206,7 +203,9 @@ public class PurchasesControllerIntegrationTest {
 
         repository.save(purchases1);
         repository.save(purchases2);
-        mvc.perform(get("http://localhost:9090/purchase/infoSum"))
+        mvc.perform(get("http://localhost:9090/purchase/infoSum")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(60000)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]").value(purchases2.getNumber()+","+buyer2.getSurname()+","+purchases2.getDate()));
@@ -232,7 +231,10 @@ public class PurchasesControllerIntegrationTest {
         repository.save(purchases1);
         repository.save(purchases2);
         repository.save(purchases3);
-        mvc.perform(get("http://localhost:9090/purchase/infoArea"))
+        mvc.perform(get("http://localhost:9090/purchase/infoArea")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(3)
+                ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]").value(buyer1.getSurname()+","+buyer1.getArea()+","+purchases1.getDate()));
@@ -259,7 +261,10 @@ public class PurchasesControllerIntegrationTest {
         repository.save(purchases1);
         repository.save(purchases2);
         repository.save(purchases3);
-        mvc.perform(get("http://localhost:9090/purchase/infoShops"))
+        StringAndInteger stringAndInteger = new StringAndInteger("Автозаводской район",15);
+        mvc.perform(get("http://localhost:9090/purchase/infoShops")
+                        .contentType("application/json")
+                        .content("Автозаводской район, 10, 15"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]").value(shop1.getName()));
@@ -288,7 +293,10 @@ public class PurchasesControllerIntegrationTest {
         repository.save(purchases2);
         repository.save(purchases3);
 
-        mvc.perform(get("http://localhost:9090/purchase/infoPurchBook"))
+        mvc.perform(get("http://localhost:9090/purchase/infoPurchBook")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(10)
+                        ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0]").value(book3.getName()+","+book3.getWarehouse()+","+purchases3.getQuantity()+","+purchases3.getSum()))

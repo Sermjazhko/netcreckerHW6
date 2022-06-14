@@ -123,7 +123,9 @@ public class BuyerControllerIntegrationTest {
         repository.save(buyer2);
         repository.save(buyer3);
 
-        mvc.perform(get("http://localhost:9090/buyer/nndistrict"))
+        mvc.perform(get("http://localhost:9090/buyer/district")
+                        .contentType("application/json")
+                        .content("Нижегородский район"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0]").value(buyer1.getSurname()+","+buyer1.getDiscount()))

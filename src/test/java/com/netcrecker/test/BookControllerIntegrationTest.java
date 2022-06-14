@@ -2,6 +2,7 @@ package com.netcrecker.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netcrecker.model.Book;
+import com.netcrecker.model.StringAndInteger;
 import com.netcrecker.services.BookRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -121,12 +122,14 @@ public class BookControllerIntegrationTest {
         Book book1 = new Book("Книги по устройству windows", 2120, "Автозаводской район", 10);
         Book book2 = new Book("Гарри Поттер и тайная комната", 20210, "Сормовский район", 100);
         Book book3 = new Book("Гарри Поттер и философский камень", 2500, "Советский район", 12);
-
+        StringAndInteger stringAndInteger = new StringAndInteger("%windows%",20000);
         repository.save(book1);
         repository.save(book2);
         repository.save(book3);
 
-        mvc.perform(get("http://localhost:9090/book/name"))
+        mvc.perform(get("http://localhost:9090/book/name")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(stringAndInteger)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[1]").value(book1.getName()+","+book1.getPrice()))

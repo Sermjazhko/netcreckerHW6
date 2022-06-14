@@ -84,9 +84,9 @@ public class BuyerController {
         return buyerRepository.getVariousArea();
     }
 
-    @GetMapping("/nndistrict")
-    public List<String> getSurname() {
-        return buyerRepository.getSurname();
+    @GetMapping("/district")
+    public List<String> getSurname(@RequestBody String district) {
+        return buyerRepository.getSurname(district);
     }
 
 }

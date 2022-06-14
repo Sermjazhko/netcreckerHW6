@@ -1,6 +1,7 @@
 package com.netcrecker.controller;
 
 import com.netcrecker.model.Shop;
+import com.netcrecker.model.StringAndInteger;
 import com.netcrecker.services.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,10 +80,10 @@ public class ShopController {
         }
     }
 
-
     @GetMapping("/name")
-    public List<String> getVarious() {
-        return shopRepository.getName();
+    public List<String> getVarious(@RequestBody String area) {
+        String[] areas = area.split(", ");
+        return shopRepository.getName(areas[0],areas[1]);
     }
 
 }
